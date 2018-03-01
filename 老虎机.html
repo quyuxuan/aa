@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=600">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+
+    <script src="mobile-util.js"></script>
+</head>
+<style>
+    *{
+       margin: 0;
+       padding: 0;
+       list-style: none;
+       font-weight: normal;
+       font-style: normal;
+       font-size: 12px;
+    }
+    a{
+        text-decoration: none;
+    }
+    img{
+        border: none;
+    }
+    .clearfix:after,.clearfix:before{
+        content: '';
+        display: table;
+    }
+    .clearfix:after{
+        clear: both;
+    }
+    .clearfix{
+        *zoom:1;
+    }
+    #box{
+        width: 100%;
+        height: 875px;
+        background-image: url(background.jpg);
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .box_con{
+        width: 502px;
+        height: 180px;
+        margin: 173px 0 0 71px;
+        display: inline-block;
+    }
+    .box_conter{
+        width: 150px;
+        height: 180px;
+        background-image: url(back.jpg);
+        float: left;
+        margin-right: 4px;
+        background-size: 150px 540px;
+    }
+    .turn{
+        animation:mymove 1s infinite linear;
+    }
+    .preplay1{animation: mymove1 }
+    .preplay2{animation: mymove2 }
+    .preplay3{animation: mymove3 }
+    /*.preplay4{animation: mymove4 }*/
+    .paused {
+        animation-fill-mode:forwards;
+    }
+
+    @keyframes mymove
+    {
+        from {background-position: 0 0;	}
+        to {background-position: 0 540px;}
+    }
+    @keyframes mymove1
+    {
+        from {	}
+        to {background-position: 0 180px;}
+    }
+    @keyframes mymove2
+    {
+        from {	}
+        to {background-position: 0 360px;}
+    }
+    @keyframes mymove3
+    {
+        from {}
+        to {background-position: 0 540px;}
+    }
+    /*@keyframes mymove4*/
+    /*{*/
+        /*from {}*/
+        /*to {background-position: 0 720px;}*/
+    /*}*/
+
+    .btn{
+        width: 196px;
+        height: 154px;
+        background-image: url(radius.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        margin-top: 98px;
+        margin-left: 203px;
+    }
+    .btn2{
+        width: 196px;
+        height: 154px;
+        background-image: url(radius_2.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        margin-top: 98px;
+        margin-left: 203px;
+        display: none;
+    }
+</style>
+<body>
+<div id="box">
+    <div class="box_con">
+        <div class="box_conter"></div>
+        <div class="box_conter"></div>
+        <div class="box_conter"></div></div>
+
+  <div class="btn"></div>
+    <div class="btn2"></div>
+</div>
+<script>
+    function Game(contaier){
+        this.contaier=document.querySelector(contaier);
+        this.btn=this.contaier.querySelector('.btn');
+        this.btn2=this.contaier.querySelector('.btn2');
+        this._init()
+    }
+    Game.prototype={
+        _init:function(){
+            _this=this;
+            this.btn.onclick=function(){
+                _this.btn.style.display="none";
+                _this.btn2.style.display="block";
+                console.log(_this.btn,_this.btn2)
+                    for (var i = 0;i < _this.contaier.querySelectorAll('.box_conter').length; i++) {
+                        _this.contaier.querySelectorAll('.box_conter')[i].className="box_conter";
+                        _this.contaier.querySelectorAll('.box_conter')[i].classList.add('turn');
+                        _this.contaier.querySelectorAll('.box_conter')[i].style.animationDuration=Math.random()+'s'
+                    }
+              };
+              this.btn2.onclick=function () {
+                  _this.btn.style.display="block";
+                  _this.btn2.style.display="none";
+                  var arr = [1,2,3,4,1,2,3,4] //2个相同1个不同
+                  arr.sort(function(){
+                      return Math.random()-0.5
+                  })
+                  console.log(arr)
+                  for (var i = 0;i < _this.contaier.querySelectorAll('.box_conter').length; i++) {
+                      _this.contaier.querySelectorAll('.box_conter')[i].classList.remove("turn")
+                      _this.contaier.querySelectorAll('.box_conter')[i].classList.add("preplay"+parseInt(Math.random()*(3-1+1)+1,10))////正常模式
+//                      _this.contaier.querySelectorAll('.box_conter')[i].classList.add('preplay'+arr[i]);// 作弊模式
+                      _this.contaier.querySelectorAll('.box_conter')[i].style.animationDuration=(0.1*(i+1))+"s"
+                      _this.contaier.querySelectorAll('.box_conter')[i].classList.add('paused');
+                  }
+                  var chose1 = _this.contaier.querySelectorAll(".preplay1")
+                  var chose2 = _this.contaier.querySelectorAll(".preplay2")
+                  var chose3 = _this.contaier.querySelectorAll(".preplay3")
+                  if(chose1.length==3){
+
+                      setTimeout(function(){alert("获得汽车一台")},500);
+                  }
+                  if(chose2.length==3){
+
+                      setTimeout(function(){alert("获得手机一部")},500);
+                  }
+                  if(chose3.length==3){
+
+                      setTimeout(function(){alert("获得电脑一台")},500);
+                  }
+
+
+              }
+        }
+    };
+
+    var game=new Game('#box');
+    console.log(game)
+</script>
+</body>
+</html>
